@@ -1,0 +1,21 @@
+//
+//  PrefixHeader.pch
+//  SendPhoto
+//
+//  Created by Александр on 30.03.15.
+//  Copyright (c) 2015 Alexander. All rights reserved.
+//
+//http://stackoverflow.com/questions/24158648/why-isnt-projectname-prefix-pch-created-automatically-in-xcode-6
+#ifndef SendPhoto_PrefixHeader_pch
+#define SendPhoto_PrefixHeader_pch
+
+#define appDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
+
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <MessageUI/MessageUI.h>
+#import <FMDB.h>
+
+#endif

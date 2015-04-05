@@ -16,8 +16,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    //[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+    [self cycleTheGlobalMailComposer];
+    
     return YES;
+}
+
+- (void)cycleTheGlobalMailComposer {
+    
+    self.globalMailComposer = nil;
+    self.globalMailComposer = [[MFMailComposeViewController alloc] init];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

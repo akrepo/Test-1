@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoCollectionViewController : UICollectionViewController <UIActionSheetDelegate>
+@interface PhotoSelectedViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 - (IBAction)addPhoto:(UIBarButtonItem *)sender;

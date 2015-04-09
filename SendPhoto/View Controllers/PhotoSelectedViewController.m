@@ -6,15 +6,16 @@
 //  Copyright (c) 2015 Alexander. All rights reserved.
 //
 
-#import "PhotoCollectionViewController.h"
+#import "PhotoSelectedViewController.h"
 #import "SWRevealViewController.h"
 #import "PhotoManager.h"
+#import "ELCImagePickerHeader.h"
 
-@interface PhotoCollectionViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface PhotoSelectedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, ELCImagePickerControllerDelegate>
 @property(nonatomic, strong) ALAssetsLibrary *photoLibrary;
 @end
 
-@implementation PhotoCollectionViewController 
+@implementation PhotoSelectedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,9 +30,9 @@
     }
 #pragma mark -
     
-    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"flax_texture_1.jpg"]];
+    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"linen.jpg"]];
     background.contentMode = UIViewContentModeScaleToFill;
-    [self.collectionView setBackgroundView:background];
+    [self.tableView setBackgroundView:background];
     
     self.photoLibrary = [[ALAssetsLibrary alloc] init];
     
@@ -74,6 +75,29 @@
     
     if (buttonIndex == kButtonIndexPhotoLibrary) {
         
+#pragma mark - ELCImagePickerController
+        ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
+        elcPicker.imagePickerDelegate = self;
+        
+        elcPicker.maximumImagesCount = 10; //Set the maximum number of images to select to 100
+        elcPicker.returnsOriginalImage = YES; //Only return the fullScreenImage, not the fullResolutionImage
+        elcPicker.returnsImage = YES; //Return UIimage if YES. If NO, only return asset location information
+        elcPicker.onOrder = YES; //For multiple image selection, display and return order of selected images
+        //elcPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie]; //Supports image and movie types
+        elcPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+        
+        [self presentViewController:elcPicker animated:YES completion:^{
+            
+        }];
+        
+        
+    } else if (buttonIndex == kButtonIndexInternet) {
+        
+    }
+    
+    /*
+    if (buttonIndex == kButtonIndexPhotoLibrary) {
+        
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         picker.delegate = self;
@@ -85,8 +109,10 @@
     } else if (buttonIndex == kButtonIndexInternet) {
         
     }
+     */
 }
 
+/*
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -106,6 +132,7 @@
         
     }];
 }
+*/
 
 #pragma mark UICollectionViewDataSource
 
@@ -116,6 +143,48 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
+}
+
+#pragma mark - ELCImagePickerControllerDelegate
+
+/**
+ * Called with the picker the images were selected from, as well as an array of dictionary's
+ * containing keys for ALAssetPropertyLocation, ALAssetPropertyType,
+ * UIImagePickerControllerOriginalImage, and UIImagePickerControllerReferenceURL.
+ * @param picker
+ * @param info An NSArray containing dictionary's with the key UIImagePickerControllerOriginalImage, which is a rotated, and sized for the screen 'default representation' of the image selected. If you want to get the original image, use the UIImagePickerControllerReferenceURL key.
+ */
+- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
+    NSLog(@"%@",[info description]);
+    
+    for (NSDictionary *dict in info) {
+        
+        [self.photoLibrary assetForURL:[dict objectForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
+            
+            Photo *photo = [[Photo alloc] initWithAsset:asset];
+            [[PhotoManager sharedManager] addPhoto:photo];
+            
+        } failureBlock:^(NSError *error) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Permission Denied" message:@"To access your photos, please change the permissions in Settings" delegate:nil cancelButtonTitle:@"ok"otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+/**
+ * Called when image selection was cancelled, by tapping the 'Cancel' BarButtonItem.
+ */
+
+- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 @end

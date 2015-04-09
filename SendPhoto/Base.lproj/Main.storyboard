@@ -69,6 +69,45 @@
             </objects>
             <point key="canvasLocation" x="62" y="64"/>
         </scene>
+        <!--Selected Photos-->
+        <scene sceneID="5tc-pu-faI">
+            <objects>
+                <tableViewController id="NLN-iU-Hi9" customClass="PhotoSelectedViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vUE-NK-yxi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="YLU-wc-2hm">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YLU-wc-2hm" id="uK3-tT-MAk">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="NLN-iU-Hi9" id="GJW-p1-wd1"/>
+                            <outlet property="delegate" destination="NLN-iU-Hi9" id="HQe-qs-p0H"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Selected Photos" id="BFj-xN-HxU">
+                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="QIO-LZ-90N"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="cKx-GZ-xvs">
+                            <connections>
+                                <action selector="addPhoto:" destination="NLN-iU-Hi9" id="wRj-8K-fJU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="sidebarButton" destination="QIO-LZ-90N" id="TUr-zu-3Pg"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7kp-Ak-aeb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="482" y="678"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="LNQ-Wg-DXv">
             <objects>
@@ -80,59 +119,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="cvV-E6-Zac" kind="relationship" relationship="rootViewController" id="qSw-8L-CZ1"/>
+                        <segue destination="NLN-iU-Hi9" kind="relationship" relationship="rootViewController" id="YLs-gV-H1h"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fjb-09-2zx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="62" y="678"/>
-        </scene>
-        <!--Photo Collection View Controller-->
-        <scene sceneID="gdE-SJ-yNj">
-            <objects>
-                <collectionViewController id="cvV-E6-Zac" customClass="PhotoCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="hhp-CX-cQp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ip4-CR-KG8">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="CgS-V0-8Bm">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="cvV-E6-Zac" id="2sn-i1-Acz"/>
-                            <outlet property="delegate" destination="cvV-E6-Zac" id="RhH-MJ-eQO"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="y3a-OV-4Cg">
-                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="E2F-st-z8g"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="d2d-Rx-iVO">
-                            <connections>
-                                <action selector="addPhoto:" destination="cvV-E6-Zac" id="TiY-VV-0mI"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="sidebarButton" destination="E2F-st-z8g" id="Hkq-QN-drt"/>
-                    </connections>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="v5U-oq-6dF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="478" y="678"/>
         </scene>
     </scenes>
     <resources>

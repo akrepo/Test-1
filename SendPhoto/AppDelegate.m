@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "DatabaseManager.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +20,8 @@
     
     //[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
     [self cycleTheGlobalMailComposer];
+    
+    //[[DatabaseManager sharedManager] initilizeDB];
     
     return YES;
 }

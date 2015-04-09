@@ -28,6 +28,11 @@
     return image;
 }
 
+- (NSURL *)URL {
+    NSURL *url = [self.asset valueForProperty:ALAssetPropertyAssetURL];
+    return url;
+}
+
 - (PhotoStatus)status
 {
     return PhotoStatusGoodToGo;
@@ -104,8 +109,10 @@
 - (instancetype)initWithAsset:(ALAsset *)asset {
 
     NSAssert(asset, @"Assset is nil");
-    AssetPhoto *assetPhoto;
-    assetPhoto = [[AssetPhoto alloc] init];
+    NSLog(@"Assset:%@",[asset description]);
+
+    AssetPhoto *assetPhoto = [[AssetPhoto alloc] init];
+    
     if (assetPhoto) {
         assetPhoto.asset = asset;
         assetPhoto.status = PhotoStatusGoodToGo;

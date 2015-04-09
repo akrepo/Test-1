@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, PhotoStatus) {
 /// Scaled down image of the original image
 - (UIImage *)thumbnail;
 
+- (NSURL *)URL;
+
 - (instancetype)initWithAsset:(ALAsset *)asset;
 - (instancetype)initwithURL:(NSURL *)url;
 - (instancetype)initwithURL:(NSURL *)url withCompletionBlock:(PhotoDownloadingCompletionBlock)completionBlock;

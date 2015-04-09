@@ -11,5 +11,6 @@
 @interface DatabaseManager : NSObject
 
 + (id)sharedManager;
+- (BOOL)insertPhotos:(NSArray *)photos;
 
 @end

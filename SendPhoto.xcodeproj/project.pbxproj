@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F11B6AB1AD807CF00F2BCC4 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F11B6AA1AD807CF00F2BCC4 /* PhotoCell.m */; };
 		1F3C3FF41AD426C30001A166 /* ELCAlbumPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3C3FE41AD426C30001A166 /* ELCAlbumPickerController.m */; };
 		1F3C3FF51AD426C30001A166 /* ELCAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3C3FE61AD426C30001A166 /* ELCAsset.m */; };
 		1F3C3FF61AD426C30001A166 /* ELCAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3C3FE81AD426C30001A166 /* ELCAssetCell.m */; };
@@ -54,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F11B6A91AD807CF00F2BCC4 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		1F11B6AA1AD807CF00F2BCC4 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		1F3C3FE31AD426C30001A166 /* ELCAlbumPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAlbumPickerController.h; sourceTree = "<group>"; };
 		1F3C3FE41AD426C30001A166 /* ELCAlbumPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELCAlbumPickerController.m; sourceTree = "<group>"; };
 		1F3C3FE51AD426C30001A166 /* ELCAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELCAsset.h; sourceTree = "<group>"; };
@@ -139,6 +142,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F11B6A81AD8076800F2BCC4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1F11B6A91AD807CF00F2BCC4 /* PhotoCell.h */,
+				1F11B6AA1AD807CF00F2BCC4 /* PhotoCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		1F3C3FC21AD423480001A166 /* ELCImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +210,7 @@
 		1FCC39DE1AD004640086B533 /* SendPhoto */ = {
 			isa = PBXGroup;
 			children = (
+				1F11B6A81AD8076800F2BCC4 /* Views */,
 				1FCD58AD1AD0173A0072F97D /* UIImage Categories */,
 				1F3C3FC21AD423480001A166 /* ELCImagePicker */,
 				1FCD58A91AD017240072F97D /* Models */,
@@ -466,6 +479,7 @@
 				1F3C3FFA1AD426C30001A166 /* ELCOverlayImageView.m in Sources */,
 				1F3C3FF61AD426C30001A166 /* ELCAssetCell.m in Sources */,
 				1FCD58B61AD017690072F97D /* UIImage+RoundedCorner.m in Sources */,
+				1F11B6AB1AD807CF00F2BCC4 /* PhotoCell.m in Sources */,
 				1FCC39E21AD004640086B533 /* main.m in Sources */,
 				1FCD58911AD0166F0072F97D /* PhotoSelectedViewController.m in Sources */,
 				1FCD58921AD0166F0072F97D /* RearMenuViewController.m in Sources */,

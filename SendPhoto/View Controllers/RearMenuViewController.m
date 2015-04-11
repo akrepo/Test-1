@@ -8,6 +8,7 @@
 
 #import "RearMenuViewController.h"
 #import "AppDelegate.h"
+#import "DatabaseManager.h"
 
 @interface RearMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -22,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.menuItems = [NSArray arrayWithObjects:@"sendEmail", nil];
+    self.menuItems = [NSArray arrayWithObjects:@"sendEmail",@"clear", nil];
     self.mailVC = [[MFMailComposeViewController alloc] init];
 }
 
@@ -44,11 +45,21 @@
 
 }
 
+//drop table in database
+- (void)clearSelectedPhotos {
+    BOOL succsess = [[DatabaseManager sharedManager] clearDatabase];
+    
+    if (succsess) {
+        NSLog(@"Clear database: OK");
+    }else {
+        NSLog(@"Clear database: ERROR");
+    }
+}
+
 #pragma mark MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    
-    
+        
     switch (result) {
     
          case MFMailComposeResultCancelled:
@@ -93,6 +104,9 @@
     switch (indexPath.row) {
         case 0:
             [self showEmailViewController];
+            break;
+        case 1:
+            [self clearSelectedPhotos];
             break;
             
         default:

@@ -36,36 +36,104 @@ NSString *databaseTableName = @"SelectedPhotos";
         NSString *pathToDatabase = [documentsDir stringByAppendingPathComponent:databaseFileName];
         NSLog(@"pathToDatabase:%@",pathToDatabase);
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:pathToDatabase]) {
-            self.db = [[FMDatabase alloc] initWithPath:pathToDatabase];
+        /*
+        NSError *error;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:pathToDatabase]) {
+            [[NSFileManager defaultManager] removeItemAtPath:pathToDatabase error:&error];
             
-            [self.db open];
-            NSString *sql = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(id integer primary key autoincrement, type text, url text)",databaseTableName];
-            
-            if ([self.db executeStatements:sql]) {
-                NSLog(@"succsess");
+            if (!error) {
+                NSLog(@"Database is deleted!");
+            }else {
+                NSLog(@"Database is NOT deleted!");
             }
-            
-            [self.db close];
         }
+        */
+        
+        self.db = [[FMDatabase alloc] initWithPath:pathToDatabase];
+        
+        [self.db open];
+        NSString *sql = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(id integer primary key autoincrement, url text)",databaseTableName];
+        
+        if ([self.db executeStatements:sql]) {
+            NSLog(@"succsess");
+        }
+        
+        [self.db close];
         
     }
     return self;
 }
 
-- (BOOL)insertPhotos:(NSArray *)photos {
+- (BOOL)insertPhoto:(Photo *)photo {
     [self.db open];
     
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@",databaseTableName];
-
+    //[database executeUpdate:@"INSERT INTO tableName (fieldName, fieldName, fieldName, fieldName) VALUES (?, ?, ?, ?)", [NSNumber numberWithLong:fieldVariable], [NSNumber numberWithLong:fieldVariable], [NSString stringWithFormat:@"%@", fieldVariable], [NSNumber numberWithInt:fieldVariable], nil];
     
-    for (Photo *photo in photos) {
-        [self.db executeQuery:<#(NSString *)#> withArgumentsInArray:<#(NSArray *)#>
+    //NSString *query = [NSString stringWithFormat:@"insert into user values ('%@', %d)",@"brandontreb", 25];
+    
+    //BOOL succsess = [self.db executeUpdate:@"INSERT INTO SelectedPhotos (url) VALUES ('urltyt')" withArgumentsInArray:nil];
+    
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (url) VALUES ('%@')",databaseTableName, [photo URL]];
+    BOOL succsess = [self.db executeUpdate:sql];
+    
+    if (succsess) {
+        NSLog(@"insert Photo: OK");
+    }else {
+        NSLog(@"insert Photo: ERROR");
     }
     
     [self.db close];
-         
-         
+    
+    return succsess;
+}
+
+- (BOOL)insertURLString:(NSString *)string {
+    [self.db open];
+    
+    //[database executeUpdate:@"INSERT INTO tableName (fieldName, fieldName, fieldName, fieldName) VALUES (?, ?, ?, ?)", [NSNumber numberWithLong:fieldVariable], [NSNumber numberWithLong:fieldVariable], [NSString stringWithFormat:@"%@", fieldVariable], [NSNumber numberWithInt:fieldVariable], nil];
+    
+    //NSString *query = [NSString stringWithFormat:@"insert into user values ('%@', %d)",@"brandontreb", 25];
+    
+    //BOOL succsess = [self.db executeUpdate:@"INSERT INTO SelectedPhotos (url) VALUES ('urltyt')" withArgumentsInArray:nil];
+    
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (url) VALUES ('%@')",databaseTableName, string];
+    BOOL succsess = [self.db executeUpdate:sql];
+    
+    if (succsess) {
+        NSLog(@"insert String: OK");
+    }else {
+        NSLog(@"insert String: ERROR");
+    }
+    
+    [self.db close];
+    
+    return succsess;
+}
+
+- (NSArray *)selectAllURLs {
+    [self.db open];
+    
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@",databaseTableName];
+    FMResultSet *set = [self.db executeQuery:sql];
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    while (set.next) {
+        [arr addObject:[set stringForColumn:@"url"]];
+    }
+    
+    [self.db close];
+    
+    return arr;
+}
+
+- (BOOL)clearDatabase {
+    [self.db open];
+    
+    NSString *sql = [NSString stringWithFormat:@"DROP TABLE %@",databaseTableName];
+    BOOL succsess = [self.db executeUpdate:sql];
+
+    [self.db close];
+    
+    return succsess;
 }
 
 /*

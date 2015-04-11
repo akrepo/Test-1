@@ -21,7 +21,7 @@
     //[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
     [self cycleTheGlobalMailComposer];
     
-    //[[DatabaseManager sharedManager] initilizeDB];
+    [DatabaseManager sharedManager];
     
     return YES;
 }

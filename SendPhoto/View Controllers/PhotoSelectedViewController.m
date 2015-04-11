@@ -9,10 +9,15 @@
 #import "PhotoSelectedViewController.h"
 #import "SWRevealViewController.h"
 #import "PhotoManager.h"
+#import "DatabaseManager.h"
 #import "ELCImagePickerHeader.h"
+#import "PhotoCell.h"
+
+NSString *const kPhotoLibraryUpdatedNotification = @"kPhotoLibraryUpdatedNotification";
 
 @interface PhotoSelectedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, ELCImagePickerControllerDelegate>
 @property(nonatomic, strong) ALAssetsLibrary *photoLibrary;
+
 @end
 
 @implementation PhotoSelectedViewController
@@ -36,12 +41,36 @@
     
     self.photoLibrary = [[ALAssetsLibrary alloc] init];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoHasAddedToPhotoLibrary) name:kPhotoLibraryUpdatedNotification object:nil];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self showOrHideNavigationPromt];
+    NSArray *urlStrings = [[DatabaseManager sharedManager] selectAllURLs];
+    
+    if (!urlStrings || (urlStrings && [urlStrings count] == 0)) {
+        [self showOrHideNavigationPromt];
+    }
+    
+    for (NSString *urlrStr in urlStrings) {
+        NSURL *url = [NSURL URLWithString:urlrStr];
+        
+        [self fillPhotoLibraryFromURL:url];
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark Notification
+- (void)photoHasAddedToPhotoLibrary {
+    
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.tableView endUpdates];
 }
 
 - (void)showOrHideNavigationPromt {
@@ -56,6 +85,22 @@
         });
         
     });
+}
+
+- (void)fillPhotoLibraryFromURL:(NSURL *)url {
+    [self.photoLibrary assetForURL:url resultBlock:^(ALAsset *asset) {
+        
+        Photo *photo = [[Photo alloc] initWithAsset:asset];
+        [[PhotoManager sharedManager] addPhoto:photo];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPhotoLibraryUpdatedNotification object:nil];
+        
+    } failureBlock:^(NSError *error) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Permission Denied" message:@"To access your photos, please change the permissions in Settings" delegate:nil cancelButtonTitle:@"ok"otherButtonTitles:nil, nil];
+        [alert show];
+        
+    }];
 }
 
 #pragma mark Actions
@@ -75,7 +120,7 @@
     
     if (buttonIndex == kButtonIndexPhotoLibrary) {
         
-#pragma mark - ELCImagePickerController
+#pragma mark - Create ELCImagePickerController
         ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
         elcPicker.imagePickerDelegate = self;
         
@@ -134,15 +179,20 @@
 }
 */
 
-#pragma mark UICollectionViewDataSource
+#pragma mark - UITableViewDataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [[[PhotoManager sharedManager] photos] count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    Photo *photo = [[[PhotoManager sharedManager] photos] objectAtIndex:indexPath.row];
+    
+    PhotoCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhotoCell"];
+    cell.imageView.image = photo.thumbnail;
+    
+    return cell;
 }
 
 #pragma mark - ELCImagePickerControllerDelegate
@@ -159,17 +209,11 @@
     
     for (NSDictionary *dict in info) {
         
-        [self.photoLibrary assetForURL:[dict objectForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
-            
-            Photo *photo = [[Photo alloc] initWithAsset:asset];
-            [[PhotoManager sharedManager] addPhoto:photo];
-            
-        } failureBlock:^(NSError *error) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Permission Denied" message:@"To access your photos, please change the permissions in Settings" delegate:nil cancelButtonTitle:@"ok"otherButtonTitles:nil, nil];
-            [alert show];
-            
-        }];
+        NSURL *assetURL = [dict objectForKey:UIImagePickerControllerReferenceURL];
+        __unused NSString *str = assetURL.absoluteString;
+        [[DatabaseManager sharedManager] insertURLString:assetURL.absoluteString];
+        
+        [self fillPhotoLibraryFromURL:assetURL];
     }
     
     [self dismissViewControllerAnimated:YES completion:^{

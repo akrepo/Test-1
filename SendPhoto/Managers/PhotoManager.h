@@ -17,6 +17,7 @@ typedef void (^BatchPhotoDownloadingCompletionBlock)(NSError *error);
 + (instancetype)sharedManager;
 - (NSArray *)photos;
 - (void)addPhoto:(Photo *)photo;
+- (void)deleteAllPhotos;
 - (void)downloadPhotosWithCompletionBlock:(BatchPhotoDownloadingCompletionBlock)completionBlock;
 
 @end

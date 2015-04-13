@@ -20,6 +20,7 @@
 		1F3C40041AD427210001A166 /* Overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F3C40021AD427210001A166 /* Overlay.png */; };
 		1F3C40051AD427210001A166 /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F3C40031AD427210001A166 /* Overlay@2x.png */; };
 		1F6AE5EB1AD5567C00E9FECA /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1F6AE5EA1AD5567C00E9FECA /* linen.jpg */; };
+		1F7B18F51ADAC3F9008C0F8B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B18F41ADAC3F9008C0F8B /* Utils.m */; };
 		1FCC39E21AD004640086B533 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCC39E11AD004640086B533 /* main.m */; };
 		1FCC39E51AD004640086B533 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCC39E41AD004640086B533 /* AppDelegate.m */; };
 		1FCC39E81AD004640086B533 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FCC39E71AD004640086B533 /* ViewController.m */; };
@@ -81,6 +82,8 @@
 		1F3C40021AD427210001A166 /* Overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Overlay.png; sourceTree = "<group>"; };
 		1F3C40031AD427210001A166 /* Overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overlay@2x.png"; sourceTree = "<group>"; };
 		1F6AE5EA1AD5567C00E9FECA /* linen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen.jpg; sourceTree = "<group>"; };
+		1F7B18F31ADAC3F9008C0F8B /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		1F7B18F41ADAC3F9008C0F8B /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		1FCC39DC1AD004640086B533 /* SendPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SendPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FCC39E01AD004640086B533 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FCC39E11AD004640086B533 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 				1FCC39EC1AD004640086B533 /* Images.xcassets */,
 				1FCC39EE1AD004640086B533 /* LaunchScreen.xib */,
 				1FCC39DF1AD004640086B533 /* Supporting Files */,
+				1F7B18F31ADAC3F9008C0F8B /* Utils.h */,
+				1F7B18F41ADAC3F9008C0F8B /* Utils.m */,
 			);
 			path = SendPhoto;
 			sourceTree = "<group>";
@@ -490,6 +495,7 @@
 				1F3C3FF41AD426C30001A166 /* ELCAlbumPickerController.m in Sources */,
 				1FCD58B51AD017690072F97D /* UIImage+Resize.m in Sources */,
 				1FCD58B41AD017690072F97D /* UIImage+Alpha.m in Sources */,
+				1F7B18F51ADAC3F9008C0F8B /* Utils.m in Sources */,
 				1FCD58931AD0166F0072F97D /* SWRevealViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

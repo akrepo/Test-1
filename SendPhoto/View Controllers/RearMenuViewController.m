@@ -8,7 +8,9 @@
 
 #import "RearMenuViewController.h"
 #import "AppDelegate.h"
+#import "Utils.h"
 #import "DatabaseManager.h"
+#import "PhotoManager.h"
 
 @interface RearMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -45,7 +47,7 @@
 
 }
 
-//drop table in database
+//delete table in database
 - (void)clearSelectedPhotos {
     BOOL succsess = [[DatabaseManager sharedManager] clearDatabase];
     
@@ -54,6 +56,8 @@
     }else {
         NSLog(@"Clear database: ERROR");
     }
+    
+    [[PhotoManager sharedManager] deleteAllPhotos];
 }
 
 #pragma mark MFMailComposeViewControllerDelegate

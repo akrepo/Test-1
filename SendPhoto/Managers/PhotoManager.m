@@ -8,6 +8,7 @@
 
 #import "PhotoManager.h"
 #import "Photo.h"
+#import "Utils.h"
 
 @interface PhotoManager ()
 @property (nonatomic, strong) NSMutableArray *photosArray;
@@ -17,8 +18,8 @@
 
 @implementation PhotoManager
 
-+ (instancetype)sharedManager
-{
++ (instancetype)sharedManager {
+
     static PhotoManager *sharedPhotoManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -35,6 +36,7 @@
         //создать dispatch_barrier 1. Создать конкурентную очередь
         _concurrentPhotoQueue = dispatch_queue_create("com.photoQueue",DISPATCH_QUEUE_CONCURRENT);
     }
+    
     return self;
 }
 
@@ -46,6 +48,7 @@
     dispatch_sync(self.concurrentPhotoQueue, ^{
         array = _photosArray;
     });
+    
     return array;
 }
 
@@ -58,10 +61,20 @@
             [_photosArray addObject:photo];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                //[self postContentAddedNotification];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPhotoLibraryUpdatedNotification object:nil];
             });
         });
     }
 }
 
+- (void)deleteAllPhotos {
+    
+    dispatch_barrier_async(self.concurrentPhotoQueue, ^{
+        [_photosArray removeAllObjects];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kClearDatabaseNotification object:nil];
+        });
+    });
+}
 @end

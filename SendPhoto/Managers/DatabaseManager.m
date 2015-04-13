@@ -19,7 +19,7 @@ NSString *databaseTableName = @"SelectedPhotos";
 
 @implementation DatabaseManager
 
-+ (id)sharedManager {
++ (instancetype)sharedManager {
     
     static id singleton = nil;
     static dispatch_once_t onceToken;
@@ -128,7 +128,7 @@ NSString *databaseTableName = @"SelectedPhotos";
 - (BOOL)clearDatabase {
     [self.db open];
     
-    NSString *sql = [NSString stringWithFormat:@"DROP TABLE %@",databaseTableName];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@",databaseTableName];
     BOOL succsess = [self.db executeUpdate:sql];
 
     [self.db close];

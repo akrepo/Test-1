@@ -12,8 +12,8 @@
 #import "DatabaseManager.h"
 #import "ELCImagePickerHeader.h"
 #import "PhotoCell.h"
+#import "Utils.h"
 
-NSString *const kPhotoLibraryUpdatedNotification = @"kPhotoLibraryUpdatedNotification";
 
 @interface PhotoSelectedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, ELCImagePickerControllerDelegate>
 @property(nonatomic, strong) ALAssetsLibrary *photoLibrary;
@@ -35,19 +35,30 @@ NSString *const kPhotoLibraryUpdatedNotification = @"kPhotoLibraryUpdatedNotific
     }
 #pragma mark -
     
-    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"linen.jpg"]];
-    background.contentMode = UIViewContentModeScaleToFill;
-    [self.tableView setBackgroundView:background];
+    [self addBackground];
     
     self.photoLibrary = [[ALAssetsLibrary alloc] init];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoHasAddedToPhotoLibrary) name:kPhotoLibraryUpdatedNotification object:nil];
+    [self fillPhotoLibraryFromDatabase];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(photoHasAddedToPhotoLibrary) name:kPhotoLibraryUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearDatabase) name:kClearDatabaseNotification object:nil];
+    
+}
+
+- (void)addBackground {
+    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"linen.jpg"]];
+    background.contentMode = UIViewContentModeScaleToFill;
+    [self.tableView setBackgroundView:background];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+}
+
+- (void)fillPhotoLibraryFromDatabase {
     NSArray *urlStrings = [[DatabaseManager sharedManager] selectAllURLs];
     
     if (!urlStrings || (urlStrings && [urlStrings count] == 0)) {
@@ -65,13 +76,22 @@ NSString *const kPhotoLibraryUpdatedNotification = @"kPhotoLibraryUpdatedNotific
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark Notification
+#pragma mark - Notification
 - (void)photoHasAddedToPhotoLibrary {
-    
+ /*
     [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
     [self.tableView endUpdates];
+  */
+    [self.tableView reloadData];
 }
+
+- (void)clearDatabase {
+    
+    [self.tableView reloadData];
+}
+
+#pragma mark -
 
 - (void)showOrHideNavigationPromt {
     
@@ -92,8 +112,6 @@ NSString *const kPhotoLibraryUpdatedNotification = @"kPhotoLibraryUpdatedNotific
         
         Photo *photo = [[Photo alloc] initWithAsset:asset];
         [[PhotoManager sharedManager] addPhoto:photo];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kPhotoLibraryUpdatedNotification object:nil];
         
     } failureBlock:^(NSError *error) {
         
